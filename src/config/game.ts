@@ -1,10 +1,12 @@
 // Constantes generales del juego. Todo lo "tocable" vive aquí o en politicians.ts / dialogs.ts.
 const q = new URLSearchParams(typeof location !== 'undefined' ? location.search : '');
 
-export const GAME_W = 216;          // ancho lógico fijo
-const ASPECT = typeof window !== 'undefined' && window.innerWidth > 0 ? window.innerHeight / window.innerWidth : 384 / 216;
-/** Alto lógico: se adapta a la pantalla del móvil (entre 9:16 y ~9:21) para que llene todo el ancho y alto. */
-export const GAME_H = Math.min(480, Math.max(384, Math.round(GAME_W * ASPECT)));
+const SW = typeof window !== 'undefined' && window.innerWidth > 0 ? window.innerWidth : 216;
+const SH = typeof window !== 'undefined' && window.innerHeight > 0 ? window.innerHeight : 384;
+const ASPECT = SH / SW;
+/** Tamaño lógico: se adapta al aspecto real de la pantalla (sin barras). Alto 384..480; si la pantalla es mas ancha que 9:16, se ensancha. */
+export const GAME_H = ASPECT >= 384 / 216 ? Math.min(480, Math.round(216 * ASPECT)) : 384;
+export const GAME_W = ASPECT >= 384 / 216 ? 216 : Math.min(512, Math.round(384 / ASPECT));
 export const DEBUG = q.has('debug');
 
 export const CFG = {
