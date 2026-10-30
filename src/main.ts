@@ -24,9 +24,9 @@ mute.addEventListener('pointerdown', e => { e.stopPropagation(); });
 mute.addEventListener('click', e => { e.stopPropagation(); snd.unlock(); snd.setMuted(!snd.muted); music.resume(); paint(); });
 
 // Desbloqueo de audio con el primer gesto (iOS / Android)
+// iOS solo lo acepta en touchend/click; se mantiene escuchando por si el sistema interrumpe el audio (llamadas, bloqueo…)
 const unlock = () => { snd.unlock(); music.resume(); };
-window.addEventListener('pointerdown', unlock, { passive: true });
-window.addEventListener('keydown', unlock);
+for (const ev of ['touchend', 'pointerup', 'click', 'keydown']) window.addEventListener(ev, unlock, { capture: true, passive: true });
 
 async function boot() {
   try { await Promise.race([document.fonts.load('8px "Press Start 2P"'), new Promise(r => setTimeout(r, 2500))]); } catch { /* */ }
@@ -36,8 +36,10 @@ async function boot() {
     scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
     input: { activePointers: 3, touch: { capture: true } },
     disableContextMenu: true,
+    audio: { noAudio: true },       // el audio va por nuestro propio Web Audio (src/audio)
     scene: [BootScene, TitleScene, GameScene, FoxScene],
   });
   (window as any).__game = game;
 }
+(window as any).__snd = snd;
 boot();

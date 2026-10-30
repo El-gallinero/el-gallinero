@@ -30,7 +30,29 @@ class Sound {
       this.noiseBuf = this.ctx.createBuffer(1, len, this.ctx.sampleRate);
       const d = this.noiseBuf.getChannelData(0); for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
     }
-    if (this.ctx.state === 'suspended' && !document.hidden) this.ctx.resume();
+    const c = this.ctx;
+    if (c.state !== 'running' && !document.hidden) { try { c.resume(); } catch { /* */ } }
+    // Truco iOS: reproducir un buffer vacío dentro del gesto termina de desbloquear el contexto
+    try { const b = c.createBuffer(1, 1, 22050), src = c.createBufferSource(); src.buffer = b; src.connect(c.destination); src.start(0); } catch { /* */ }
+    this.keepAlive();
+  }
+  private silent?: HTMLAudioElement;
+  /** iOS silencia Web Audio con el interruptor de silencio; un <audio> en bucle lo pasa al canal de "reproducción". */
+  private keepAlive() {
+    try { (navigator as any).audioSession && ((navigator as any).audioSession.type = 'playback'); } catch { /* */ }
+    try {
+      if (!this.silent) {
+        const n = 800, h = new DataView(new ArrayBuffer(44 + n));
+        const w = (o: number, t: string) => { for (let i = 0; i < t.length; i++) h.setUint8(o + i, t.charCodeAt(i)); };
+        w(0, 'RIFF'); h.setUint32(4, 36 + n, true); w(8, 'WAVEfmt '); h.setUint32(16, 16, true); h.setUint16(20, 1, true); h.setUint16(22, 1, true);
+        h.setUint32(24, 8000, true); h.setUint32(28, 8000, true); h.setUint16(32, 1, true); h.setUint16(34, 8, true); w(36, 'data'); h.setUint32(40, n, true);
+        for (let i = 0; i < n; i++) h.setUint8(44 + i, 128);
+        const a = new Audio(URL.createObjectURL(new Blob([h.buffer], { type: 'audio/wav' })));
+        a.loop = true; a.volume = 0.01; (a as any).playsInline = true; a.setAttribute('playsinline', '');
+        this.silent = a;
+      }
+      if (this.silent.paused) void this.silent.play().catch(() => { /* */ });
+    } catch { /* */ }
   }
   setMuted(m: boolean) {
     this.muted = m;
