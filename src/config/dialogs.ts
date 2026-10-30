@@ -1,0 +1,21 @@
+// Textos de interfaz y de personajes secundarios. Nada de texto "hardcodeado" en las escenas.
+export const TEXT = {
+  title: 'EL GALLINERO',
+  tapToStart: 'TOCA PARA EMPEZAR',
+  disclaimer: '¡A VOTAR!',
+  question: (name: string) => `¿Quieres votar a ${name}?`,
+  yes: 'SÍ, VOTAR',
+  no: 'NO, SEGUIR',
+  npc: '¡Tienes que votar, si no luego no te puedes quejar!',
+  knock: 'TOC',
+  laugh: '¡JA, JA, JA!',
+  gulp: '¡GLUP!',
+  burp: '¡BUUURP!',
+  again: 'JUGAR OTRA VEZ',
+  end: 'TERMINAR',
+  byeTitle: '¡GRACIAS POR JUGAR!',
+  byeAgain: 'EMPEZAR DE NUEVO',
+  loading: 'CARGANDO…',
+  controlsHint: 'ARRASTRA PARA MOVERTE',
+  controlsHintPc: 'WASD / FLECHAS',
+};
