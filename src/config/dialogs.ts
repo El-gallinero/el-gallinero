@@ -11,7 +11,7 @@ export const TEXT = {
   laugh: '¡JA, JA, JA!',
   gulp: '¡GLUP!',
   burp: '¡BUUURP!',
-  again: 'JUGAR OTRA VEZ',
+  again: 'VOTAR OTRA OPCION',
   end: 'TERMINAR',
   byeTitle: '¡GRACIAS POR JUGAR!',
   byeAgain: 'EMPEZAR DE NUEVO',
