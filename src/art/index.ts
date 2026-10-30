@@ -8,6 +8,7 @@ import * as props from './props';
 import { generateGround } from './tiles';
 import { drawFoxRoom } from './room';
 import { POLITICIANS } from '../config/politicians';
+import { GAME_W, GAME_H } from '../config/game';
 
 const tick = () => new Promise<void>(r => setTimeout(r, 0));
 export const DIRS: Dir[] = ['down', 'up', 'left', 'right'];
@@ -100,7 +101,7 @@ export async function generateAllArt(scene: Phaser.Scene, progress: (p: number, 
   F('lick', { mouth: 0, tongue: 'lick', eyes: 'squint' }); F('smile', { mouth: 0, eyes: 'squint', arms: 'belly' });
   F('look_l', { mouth: 0, look: -1 }); F('look_r', { mouth: 0, look: 1 });
   F('burp', { mouth: 2, eyes: 'squint', cheeks: true });
-  reg(scene, 'fox_room', drawFoxRoom(216, 384));
+  reg(scene, 'fox_room', drawFoxRoom(GAME_W, GAME_H));
   progress(0.85, 'ZORRO'); await tick();
 
   // ── escenario ────────────────────────────────────────────
@@ -125,8 +126,8 @@ export async function generateAllArt(scene: Phaser.Scene, progress: (p: number, 
   const fea = new Px(6, 3); fea.rect(0, 1, 6, 1, '#ffffff'); fea.rect(1, 0, 3, 1, '#e8e8f4'); fea.rect(2, 2, 3, 1, '#d0d0e0'); reg(scene, 'pt_feather', fea);
   scene.textures.addCanvas('glow_red', glow(128, '255,60,40', 1));
   scene.textures.addCanvas('glow_warm', glow(128, '255,220,150', 0.9));
-  const vg = document.createElement('canvas'); vg.width = 216; vg.height = 384;
-  { const g = vg.getContext('2d')!; const grd = g.createRadialGradient(108, 192, 90, 108, 192, 260); grd.addColorStop(0, 'rgba(10,0,10,0)'); grd.addColorStop(1, 'rgba(10,0,10,0.72)'); g.fillStyle = grd; g.fillRect(0, 0, 216, 384); }
+  const vg = document.createElement('canvas'); vg.width = GAME_W; vg.height = GAME_H;
+  { const g = vg.getContext('2d')!; const grd = g.createRadialGradient(GAME_W / 2, GAME_H / 2, 90, GAME_W / 2, GAME_H / 2, GAME_H * 0.68); grd.addColorStop(0, 'rgba(10,0,10,0)'); grd.addColorStop(1, 'rgba(10,0,10,0.72)'); g.fillStyle = grd; g.fillRect(0, 0, GAME_W, GAME_H); }
   scene.textures.addCanvas('vignette', vg);
   progress(1, 'LISTO');
 }
