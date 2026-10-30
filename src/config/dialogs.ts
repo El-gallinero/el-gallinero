@@ -11,6 +11,7 @@ export const TEXT = {
   laugh: '¡JA, JA, JA!',
   gulp: '¡GLUP!',
   burp: '¡BUUURP!',
+  foxWorker: '¡ESTE POLÍTICO\nTRABAJABA PARA\nEL ZORRO!',
   again: 'VOTAR OTRA OPCION',
   end: 'TERMINAR',
   byeTitle: '¡GRACIAS POR JUGAR!',

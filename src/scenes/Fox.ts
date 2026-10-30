@@ -195,6 +195,8 @@ export class FoxScene extends Phaser.Scene {
     const go = (fn: () => void) => () => { if (locked) return; locked = true; cam.fadeOut(350, 0, 0, 0); cam.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, fn); };
     const again = pixelButton(this, CX, y1 + 60, 184, 34, TEXT.again, GREEN, go(() => this.scene.start('Game')));
     const end = pixelButton(this, CX, y2 + 60, 184, 34, TEXT.end, RED, go(() => this.scene.start('Title', { bye: true })));
+    const msg = arcadeText(this, CX, y1 - 66, TEXT.foxWorker, 10, '#ffffff', '#3a1020').setDepth(1100).setAlpha(0);
+    this.tweens.add({ targets: msg, alpha: 1, duration: 300 });
     [again.c, end.c].forEach(c => c.setDepth(1100));
     this.tweens.add({ targets: again.c, y: y1, duration: 260, ease: 'Back.easeOut' });
     this.tweens.add({ targets: end.c, y: y2, duration: 260, delay: 90, ease: 'Back.easeOut' });
