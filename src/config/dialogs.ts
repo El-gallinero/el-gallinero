@@ -13,7 +13,7 @@ export const TEXT = {
   burp: '¡BUUURP!',
   foxWorker: '¡ESTE POLÍTICO\nTRABAJA PARA\nEL ZORRO!',
   allFox: '¡VAYA! PARECE QUE\nTODOS NUESTROS\nPOLÍTICOS TRABAJAN\nPARA EL ZORRO',
-  again2: 'SEGUIR INTENTÁNDOLO',
+  again2: '¿SEGUIR INTENTÁNDOLO?',
   again: 'VOTAR OTRA OPCION',
   end: 'TERMINAR',
   byeTitle: '¡GRACIAS POR JUGAR!',
