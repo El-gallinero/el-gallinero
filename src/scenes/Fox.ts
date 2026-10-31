@@ -192,11 +192,12 @@ export class FoxScene extends Phaser.Scene {
   private showEnd() {
     const cam = this.cameras.main;
     const y1 = GAME_H - 66, y2 = GAME_H - 26;
+    const fresh = !fed.has(this.def.id);
     fed.add(this.def.id);
-    const all = POLITICIANS.every(p => fed.has(p.id));
+    const all = fresh && fed.size === 2;   // segundo político DISTINTO: remate del chiste
     let locked = false;
     const go = (fn: () => void) => () => { if (locked) return; locked = true; cam.fadeOut(350, 0, 0, 0); cam.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, fn); };
-    const again = pixelButton(this, CX, y1 + 60, 184, 34, all ? TEXT.again2 : TEXT.again, GREEN, go(() => { if (all) fed.clear(); this.scene.start('Game'); }));
+    const again = pixelButton(this, CX, y1 + 60, 184, 34, all ? TEXT.again2 : TEXT.again, GREEN, go(() => this.scene.start('Game')));
     const end = pixelButton(this, CX, y2 + 60, 184, 34, TEXT.end, RED, go(() => this.scene.start('Title', { bye: true })));
     const msg = arcadeText(this, CX, y1 - 66, all ? TEXT.allFox : TEXT.foxWorker, 10, '#ffffff', '#3a1020').setDepth(1100).setAlpha(0);
     this.tweens.add({ targets: msg, alpha: 1, duration: 300 });
