@@ -8,6 +8,7 @@ import { arcadeText, pixelButton, GREEN, RED } from '../ui/widgets';
 import { snd } from '../audio/sound';
 import { music } from '../audio/music';
 import { fed } from '../state';
+import { stat } from '../stats';
 
 const CX = GAME_W / 2;
 const FOX = { x: CX, y: 198 };            // pies del zorro
@@ -193,6 +194,7 @@ export class FoxScene extends Phaser.Scene {
     const cam = this.cameras.main;
     const y1 = GAME_H - 66, y2 = GAME_H - 26;
     const fresh = !fed.has(this.def.id);
+    stat('zorro-' + this.def.id);
     fed.add(this.def.id);
     const all = fresh && fed.size === 2;   // segundo político DISTINTO: remate del chiste
     let locked = false;

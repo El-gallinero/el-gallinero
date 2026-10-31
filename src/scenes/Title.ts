@@ -1,3 +1,4 @@
+import { stat } from '../stats';
 import Phaser from 'phaser';
 import { GAME_W, GAME_H } from '../config/game';
 import { TEXT } from '../config/dialogs';
@@ -42,7 +43,7 @@ export class TitleScene extends Phaser.Scene {
       let go = false;
       const start = () => {
         if (go) return; go = true;
-        snd.unlock(); snd.click(); snd.cluck(); music.play('farm');
+        stat('partida'); snd.unlock(); snd.click(); snd.cluck(); music.play('farm');
         cam.fadeOut(350, 0, 0, 0);
         cam.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => this.scene.start('Game'));
       };
