@@ -17,7 +17,7 @@ export const TEXT = {
   optRebel: 'REBELIÓN EN EL CORRAL',
   optSelf: 'GALLINERO AUTOSUFICIENTE',
   optHome: 'IRME A CASA\nA VER GALLINAFLIX',
-  homeCaps: ['GALLINAFLIX'],
+  homeCaps: ['A CASA A VER\nGALLINAFLIX'],
   optKeep: 'SEGUIR VOTANDO',
   votes: (n: number) => `VOTOS AL ZORRO: ${n}`,
   keepLines: ['', '', '', 'OTRA VEZ\nLO MISMO...', 'Y SIGUES\nVOTANDO...'],

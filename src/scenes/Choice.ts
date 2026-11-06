@@ -103,7 +103,7 @@ export class EndingScene extends Phaser.Scene {
         this.tweens.add({ targets: gl, alpha: { from: 0.1, to: 0.28 }, duration: 200 + i * 40, yoyo: true, repeat: -1 });
       }
       this.add.rectangle(0, 0, GAME_W, GAME_H, 0x1a0820, 0.12).setOrigin(0, 0).setDepth(2000);
-      sub = [TEXT.rebelHint, TEXT.rebelEnd];
+      sub = [TEXT.optRebel.replace(' EN', '\nEN')];
       snd.cluck();
     } else {
       // una gallina, sus dos pollitos, huerto, frutos y una placa solar
@@ -119,15 +119,12 @@ export class EndingScene extends Phaser.Scene {
         const c = this.add.sprite(hx + dx, hy + dy, 'chick_0').setOrigin(0.5, 12 / 14).setScale(2).setDepth(hy + dy); c.play('chick_walk');
         this.tweens.add({ targets: c, y: c.y - 4, duration: 320 + i * 60, yoyo: true, repeat: -1 });
       });
-      sub = TEXT.selfCaps;
+      sub = [TEXT.selfEnd];
       snd.sparkle();
     }
     const cap = arcadeText(this, CX, 60, sub[0], 11, '#ffffff', '#3a1020').setDepth(3000);
-    let i = 0;
-    if (sub.length > 1) this.time.addEvent({ delay: 2200, repeat: sub.length - 2, callback: () => { i++; cap.setText(sub[i]); snd.blip(); } });
-    const end = sub.length * 2200 + 600;
-    this.time.delayedCall(end, () => {
-      cap.setText(rebel ? TEXT.rebelEnd : TEXT.selfEnd);
+    void cap;
+    this.time.delayedCall(2800, () => {
       const fin = arcadeText(this, CX, gy - 46, TEXT.fin, 26, '#ffe14a', '#3a1020').setDepth(3000).setAlpha(0);
       this.tweens.add({ targets: fin, alpha: 1, duration: 500 });
       txt(this, CX, 104, TEXT.endings(seenEndings.size, TOTAL_ENDINGS), 8, '#ffffff').setDepth(3000).setShadow(0, 2, '#1b1424', 0, false, true);
