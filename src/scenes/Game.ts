@@ -436,7 +436,7 @@ export class GameScene extends Phaser.Scene {
       const d = Math.hypot(h.x - w.x, h.y - w.y);
       if (d < 58) {
         w.stop(); w.sprite.play('gal_npc_talk');
-        this.npcState = 'talk'; this.npcT = 5.2;
+        this.npcState = 'talk'; this.npcT = 6.5;
         snd.cluck();
         this.npcBubble = new Bubble(this, w.x, w.y - 32, TEXT.npc, 150, 3);
         this.npcBubble.typeOut();

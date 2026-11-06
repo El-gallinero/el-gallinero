@@ -14,7 +14,7 @@ export const CFG = {
   player: { speed: 74, accel: 900, footHW: 6, footHH: 3, stepEvery: 15 },
   proximity: 46,                    // radio de interacción con un político (px)
   proximityReset: 74,               // hay que alejarse esto para reactivar un diálogo tras "NO"
-  npcDelaySec: Number(q.get('npc') ?? 18),   // gallina que presiona a votar
+  npcDelaySec: Number(q.get('npc') ?? 6),   // gallina que presiona a votar
   typeMsPerChar: 26,
   camLerp: 0.1,
   fadeMs: 700,
