@@ -181,8 +181,7 @@ export class EndingScene extends Phaser.Scene {
     const sub = TEXT.homeCaps;
     const cap = arcadeText(this, W / 2, 60, sub[0], 11, '#ffffff', '#3a1020').setDepth(3000);
     let i = 0;
-    this.time.addEvent({ delay: 2200, repeat: sub.length - 2, callback: () => { i++; cap.setText(sub[i]); snd.blip(); } });
-    this.time.delayedCall(sub.length * 2200 + 600, () => {
+    this.time.delayedCall(2800, () => {
       const fin = arcadeText(this, W / 2, fy - 50, TEXT.fin, 26, '#ffe14a', '#3a1020').setDepth(3000).setAlpha(0);
       this.tweens.add({ targets: fin, alpha: 1, duration: 500 });
       txt(this, W / 2, 104, TEXT.endings(seenEndings.size, TOTAL_ENDINGS), 8, '#ffffff').setDepth(3000).setShadow(0, 2, '#1b1424', 0, false, true);

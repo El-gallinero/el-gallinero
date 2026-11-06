@@ -16,9 +16,9 @@ export const TEXT = {
   choiceTitle: '¿Y AHORA QUÉ?',
   optRebel: 'REBELIÓN EN EL CORRAL',
   optSelf: 'GALLINERO AUTOSUFICIENTE',
-  optHome: 'IRME A CASA\nA VER LA TELE',
-  homeCaps: ['PASO DE TODO...', 'MEJOR ME VOY\nA CASA', 'SERIE, PIZZA Y\nQUE SE ARREGLE\nOTRA'],
-  homeEnd: 'SERIE, PIZZA Y\nQUE SE ARREGLE\nOTRA',
+  optHome: 'IRME A CASA
+A VER GALLINAFLIX',
+  homeCaps: ['GALLINAFLIX'],
   optKeep: 'SEGUIR VOTANDO',
   votes: (n: number) => `VOTOS AL ZORRO: ${n}`,
   keepLines: ['', '', '', 'OTRA VEZ\nLO MISMO...', 'Y SIGUES\nVOTANDO...'],
