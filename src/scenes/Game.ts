@@ -221,7 +221,7 @@ export class GameScene extends Phaser.Scene {
 
     // gallina secundaria
     if (!this.voted) this.exploreTime += dt;
-    if (!this.voted && fed.size === 0 && this.npcState === 'none' && this.exploreTime >= CFG.npcDelaySec) this.spawnNpc();
+    if (!this.voted && fed.size <= 1 && this.npcState === 'none' && this.exploreTime >= CFG.npcDelaySec) this.spawnNpc();
 
     // presos: aviso al acercarse
     let near = '';
