@@ -5,7 +5,7 @@ import { FACES } from './faces';
 
 export type Arm = 'urn' | 'point' | 'knock' | 'cheer' | 'scared';
 export interface PolPose { dir: Dir; legs?: number; bob?: number; mouth?: 0 | 1 | 2; arm?: Arm; blink?: boolean; eyes?: 'normal' | 'wide' | 'happy'; point?: number; shake?: number }
-export interface UrnSpec { color: number; mark: string; ballot: boolean }
+export interface UrnSpec { color: number; mark: string; ballot: boolean; hide?: boolean }
 export const POL_W = 48, POL_H = 60;
 const OUT = '#1b1424';
 const hx = (n: number) => '#' + n.toString(16).padStart(6, '0');
@@ -18,6 +18,7 @@ const GLYPH: Record<string, string[]> = {
 const FEM = ['.XXX.', 'X...X', 'X...X', '.XXX.', '..X..', '.XXX.'];
 
 export function drawUrn(p: Px, x: number, y: number, w: number, h: number, u: UrnSpec, glyph = true) {
+  if (u.hide) return;
   p.rect(x, y, w, h, '#d6ecf4');
   p.rect(x, y, w, 1, '#ffffff'); p.rect(x + 1, y + 1, 2, h - 3, '#f3fbff');
   p.rect(x, y + h - 2, w, 2, '#aac6d4');
@@ -38,6 +39,7 @@ export function drawUrn(p: Px, x: number, y: number, w: number, h: number, u: Ur
 }
 
 function drawMark(p: Px, lx: number, ly: number, lw: number, u: UrnSpec) {
+  if (u.hide) return;
   if (u.mark === 'F') {
     FEM.forEach((row, j) => [...row].forEach((ch, i) => { if (ch === 'X') p.set(lx + 2 + i, ly + 1 + j, '#ffffff'); }));
   } else if (u.mark) {
@@ -148,7 +150,7 @@ export function drawPol(look: Look, urn: UrnSpec, o: PolPose): Px {
   }
 
   // ── cabeza: de frente se usa el retrato de la hoja de referencia; de lado/espalda, dibujo procedural ──
-  const FACE = dir === 'down' ? FACES[look.hairStyle] : undefined;
+  const FACE = dir === 'down' && !look.noFace ? FACES[look.hairStyle] : undefined;
   if (FACE) {
     const fx = Math.round(24 - FACE.w / 2), fy = 1 + oy;
     p.rect(21, 30 + oy, 7, 6, sk.dark);                                // cuello

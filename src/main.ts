@@ -5,6 +5,7 @@ import { BootScene } from './scenes/Boot';
 import { TitleScene } from './scenes/Title';
 import { GameScene } from './scenes/Game';
 import { FoxScene } from './scenes/Fox';
+import { ChoiceScene, EndingScene } from './scenes/Choice';
 import { snd } from './audio/sound';
 import { music } from './audio/music';
 
@@ -37,7 +38,7 @@ async function boot() {
     input: { activePointers: 3, touch: { capture: true } },
     disableContextMenu: true,
     audio: { noAudio: true },       // el audio va por nuestro propio Web Audio (src/audio)
-    scene: [BootScene, TitleScene, GameScene, FoxScene],
+    scene: [BootScene, TitleScene, GameScene, FoxScene, ChoiceScene, EndingScene],
   });
   (window as any).__game = game;
 }

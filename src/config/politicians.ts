@@ -33,3 +33,11 @@ export const POLITICIANS: PoliticianDef[] = [
   { id: 'abascal', name: 'Pollascal', line: '¡Este gallinero se defiende con dos huevos!',
     spriteId: 'abascal', x: sc(260), y: sc(900), speed: 126, idleAnim: 'idle', reaction: 'B', urnColor: 0x5fa83a, urnMark: 'VX' },
 ];
+
+// Presos de la parodia: personajes INVENTADOS (no se parecen a nadie concreto), en jaulas junto al camino.
+export interface PrisonerDef { id: string; name: string; x: number; y: number }
+export const PRISONERS: PrisonerDef[] = [
+  { id: 'pris_a', name: 'Tesorero Cacareo', x: sc(570), y: sc(1870) },
+  { id: 'pris_b', name: 'Concejal Huevos', x: sc(810), y: sc(1450) },
+  { id: 'pris_c', name: 'Alcalde Sobres', x: sc(560), y: sc(780) },
+];

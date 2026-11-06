@@ -250,3 +250,22 @@ export function butterfly(f: number, col: string): Px {
   return p;
 }
 export { hash2 };
+
+/** Jaula de hierro para los presos (barrotes finos: se ve al preso detrás). */
+export function cage(): PropArt {
+  const p = new Px(46, 66);
+  const iron = ramp('#6a7384');
+  // base y techo
+  p.rect(1, 61, 44, 4, iron.dark); p.rect(1, 61, 44, 1, iron.light);
+  p.rect(1, 2, 44, 4, iron.base); p.rect(1, 2, 44, 1, iron.light); p.rect(1, 5, 44, 1, iron.dark);
+  p.rect(18, 0, 10, 3, iron.base); p.rect(21, 0, 4, 1, iron.light);
+  // barrotes
+  for (let x = 3; x <= 43; x += 5) { p.rect(x, 6, 2, 55, iron.base); p.rect(x, 6, 1, 55, iron.light); }
+  p.rect(1, 6, 2, 55, iron.dark); p.rect(43, 6, 2, 55, iron.dark);
+  // travesaño medio
+  p.rect(1, 33, 44, 2, iron.dark);
+  // candado
+  p.rect(20, 40, 6, 5, '#e0b030'); p.rect(20, 40, 6, 1, '#ffe27a'); p.rect(21, 37, 4, 3, '#8a8a92'); p.set(23, 42, '#2b1a10');
+  p.outline(OUT);
+  return P(p, 40, 10);
+}

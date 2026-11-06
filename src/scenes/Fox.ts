@@ -4,10 +4,10 @@ import { TEXT } from '../config/dialogs';
 import { POLITICIANS, PoliticianDef } from '../config/politicians';
 import { POL_ORIGIN } from '../art';
 import { Walker } from '../entities/Walker';
-import { arcadeText, pixelButton, GREEN, RED } from '../ui/widgets';
+import { arcadeText, pixelButton, GREEN, RED, FONT, PixelButton } from '../ui/widgets';
 import { snd } from '../audio/sound';
 import { music } from '../audio/music';
-import { fed } from '../state';
+import { fed, resetRun, seenEndings } from '../state';
 import { stat } from '../stats';
 
 const CX = GAME_W / 2;
@@ -196,16 +196,28 @@ export class FoxScene extends Phaser.Scene {
     const fresh = !fed.has(this.def.id);
     stat('zorro-' + this.def.id);
     fed.add(this.def.id);
-    const all = fresh && fed.size === 2;   // segundo político DISTINTO: remate del chiste
+    const n = fed.size;
     let locked = false;
     const go = (fn: () => void) => () => { if (locked) return; locked = true; cam.fadeOut(350, 0, 0, 0); cam.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, fn); };
-    const again = pixelButton(this, CX, y1 + 60, 184, 34, all ? TEXT.again2 : TEXT.again, GREEN, go(() => this.scene.start('Game')));
-    const end = pixelButton(this, CX, y2 + 60, 184, 34, TEXT.end, RED, go(() => this.scene.start('Title', { bye: true })));
-    const msg = arcadeText(this, CX, y1 - 66, all ? TEXT.allFox : TEXT.foxWorker, 10, '#ffffff', '#3a1020').setDepth(1100).setAlpha(0);
+    const text = n === 1 || !fresh ? TEXT.foxWorker : n === 2 ? TEXT.allFox : n === 5 ? TEXT.foxWins : TEXT.keepLines[n];
+    const msg = arcadeText(this, CX, y1 - 66, text, 10, '#ffffff', '#3a1020').setDepth(1100).setAlpha(0);
     this.tweens.add({ targets: msg, alpha: 1, duration: 300 });
+    if (n >= 3) this.add.text(CX, 10, TEXT.votes(n), { fontFamily: FONT, fontSize: '8px', color: '#ffe14a', stroke: '#3a1020', strokeThickness: 3 }).setOrigin(0.5, 0).setDepth(1100);
+    snd.blip();
+    if (n === 2) {                          // remate: la pantalla cambia sola a "¿Y AHORA QUÉ?"
+      this.time.delayedCall(3600, go(() => this.scene.start('Choice')));
+      return;
+    }
+    let again: PixelButton | undefined;
+    if (n === 5) {
+      seenEndings.add('zorro'); stat('final-zorro');
+      again = pixelButton(this, CX, y1 + 60, 184, 34, TEXT.restart, GREEN, go(() => { resetRun(); this.scene.start('Game'); }));
+    } else {
+      again = pixelButton(this, CX, y1 + 60, 184, 34, TEXT.again, GREEN, go(() => this.scene.start('Game')));
+    }
+    const end = pixelButton(this, CX, y2 + 60, 184, 34, TEXT.end, RED, go(() => this.scene.start('Title', { bye: true })));
     [again.c, end.c].forEach(c => c.setDepth(1100));
     this.tweens.add({ targets: again.c, y: y1, duration: 260, ease: 'Back.easeOut' });
     this.tweens.add({ targets: end.c, y: y2, duration: 260, delay: 90, ease: 'Back.easeOut' });
-    snd.blip();
   }
 }

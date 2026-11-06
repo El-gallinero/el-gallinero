@@ -48,13 +48,14 @@ export function pixelButton(scene: Phaser.Scene, x: number, y: number, w: number
     g.fillStyle(col.light, 1); g.fillRect(-w / 2 + 6, -h / 2 + 4 + o, w - 12, 2);
   };
   draw(false);
-  const t = txt(scene, 0, -4, label, 8, col.text ?? '#ffffff'); t.setShadow(0, 1, col.text ? '#fff3b0' : '#000000', 0, false, true);
+  const off = (label.split('\n').length - 1) * 7;      // etiquetas de 2 líneas: se centran
+  const t = txt(scene, 0, -4 - off, label, 8, col.text ?? '#ffffff'); t.setShadow(0, 1, col.text ? '#fff3b0' : '#000000', 0, false, true);
   c.add([g, t]);
   const hit = scene.add.rectangle(0, 0, w + 4, h + 6, 0xffffff, 0.001).setScrollFactor(0).setInteractive({ useHandCursor: true });
   c.add(hit);
   let used = false, enabled = true;
-  hit.on('pointerdown', () => { if (used || !enabled) return; draw(true); t.y = -2; });
-  hit.on('pointerout', () => { if (used) return; draw(false); t.y = -4; });
-  hit.on('pointerup', () => { if (used || !enabled) return; used = true; draw(true); t.y = -2; snd.unlock(); snd.click(); onPress(); });
+  hit.on('pointerdown', () => { if (used || !enabled) return; draw(true); t.y = -2 - off; });
+  hit.on('pointerout', () => { if (used) return; draw(false); t.y = -4 - off; });
+  hit.on('pointerup', () => { if (used || !enabled) return; used = true; draw(true); t.y = -2 - off; snd.unlock(); snd.click(); onPress(); });
   return { c, setEnabled(b: boolean) { enabled = b; c.setAlpha(b ? 1 : 0.5); }, destroy() { c.destroy(); } };
 }

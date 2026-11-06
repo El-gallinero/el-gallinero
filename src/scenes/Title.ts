@@ -1,4 +1,5 @@
 import { stat } from '../stats';
+import { resetRun, seenEndings, TOTAL_ENDINGS } from '../state';
 import Phaser from 'phaser';
 import { GAME_W, GAME_H } from '../config/game';
 import { TEXT } from '../config/dialogs';
@@ -43,7 +44,7 @@ export class TitleScene extends Phaser.Scene {
       let go = false;
       const start = () => {
         if (go) return; go = true;
-        stat('partida'); snd.unlock(); snd.click(); snd.cluck(); music.play('farm');
+        resetRun(); stat('partida'); snd.unlock(); snd.click(); snd.cluck(); music.play('farm');
         cam.fadeOut(350, 0, 0, 0);
         cam.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => this.scene.start('Game'));
       };
@@ -51,7 +52,9 @@ export class TitleScene extends Phaser.Scene {
       this.input.keyboard?.once('keydown', start);
     } else {
       arcadeText(this, GAME_W / 2, 168, '¡GRACIAS\nPOR JUGAR!', 14, '#ffffff', '#3a1020');
-      pixelButton(this, GAME_W / 2, 224, 180, 38, TEXT.byeAgain, GOLD, () => {
+      if (seenEndings.size) txt(this, GAME_W / 2, 196, TEXT.endings(seenEndings.size, TOTAL_ENDINGS), 8, '#ffe9c8').setShadow(0, 1, '#2a1020', 0, false, true);
+      pixelButton(this, GAME_W / 2, 232, 180, 38, TEXT.byeAgain, GOLD, () => {
+        resetRun();
         cam.fadeOut(300, 0, 0, 0);
         cam.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => this.scene.start('Game'));
       });

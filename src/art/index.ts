@@ -7,7 +7,7 @@ import { drawFox, FOX_W, FOX_H, FoxPose } from './fox';
 import * as props from './props';
 import { generateGround } from './tiles';
 import { drawFoxRoom } from './room';
-import { POLITICIANS } from '../config/politicians';
+import { POLITICIANS, PRISONERS } from '../config/politicians';
 import { GAME_W, GAME_H } from '../config/game';
 
 const tick = () => new Promise<void>(r => setTimeout(r, 0));
@@ -92,6 +92,12 @@ export async function generateAllArt(scene: Phaser.Scene, progress: (p: number, 
     progress(0.55 + 0.25 * (++n / POLITICIANS.length), 'PERSONAJES'); await tick();
   }
 
+  // ── presos (inventados) ──────────────────────────────────
+  for (const pr of PRISONERS) {
+    const look = LOOKS[pr.id], urn = { color: 0x888888, mark: '', ballot: false, hide: true };
+    for (let i = 0; i < 2; i++) reg(scene, `${pr.id}_${i}`, drawPol(look, urn, { dir: 'down', arm: 'cheer', eyes: 'wide', mouth: 2, bob: i, legs: 0 }));
+  }
+
   // ── zorro ────────────────────────────────────────────────
   const F = (k: string, o: FoxPose) => reg(scene, `fox_${k}`, drawFox(o));
   F('idle0', { mouth: 0 }); F('idle1', { mouth: 0, sy: 1 });
@@ -112,7 +118,7 @@ export async function generateAllArt(scene: Phaser.Scene, progress: (p: number, 
   add('feeder', props.trough(false)); add('trough', props.trough(true)); add('barrel', props.barrel()); add('crate', props.crate());
   add('scarecrow', props.scarecrow());
   add('coop', props.coop()); add('coopBig', props.coop({ big: true, roof: '#c2242c', wall: '#d8a050' })); add('coopOld', props.coop({ wall: '#8a6a4a', roof: '#6a4a3a' }));
-  add('horreo', props.horreo()); add('sign', props.sign());
+  add('horreo', props.horreo()); add('sign', props.sign()); add('cage', props.cage());
   add('fenceH', props.fenceH(false)); add('fenceV', props.fenceV(false)); add('fenceHd', props.fenceH(true)); add('fenceVd', props.fenceV(true));
   for (let k = 0; k < 4; k++) add(`door_${k}`, props.doorShed(k));
   for (let f = 0; f < 2; f++) { reg(scene, `bfly_a${f}`, props.butterfly(f, '#ffd84a')); reg(scene, `bfly_b${f}`, props.butterfly(f, '#ff7ab0')); }
@@ -153,6 +159,7 @@ export function createAnims(scene: Phaser.Scene) {
     mk(`pol_${pl.id}_knock`, ['knock_0', 'knock_1'].map(k => `pol_${pl.id}_${k}`), 6);
     mk(`pol_${pl.id}_scared`, ['scared_0', 'scared_1'].map(k => `pol_${pl.id}_${k}`), 12);
   }
+  for (const pr of PRISONERS) mk(`${pr.id}_anim`, [0, 1].map(i => `${pr.id}_${i}`), 3);
   mk('fox_idle', ['fox_idle0', 'fox_idle1'], 1.6);
   mk('fox_laugh', ['fox_laugh0', 'fox_laugh1'], 7);
   mk('fox_chew', ['fox_chew0', 'fox_chew1'], 7);

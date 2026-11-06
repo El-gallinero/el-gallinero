@@ -1,9 +1,9 @@
 import Phaser from 'phaser';
 import { CFG, GAME_W, GAME_H, DEBUG } from '../config/game';
 import { TEXT } from '../config/dialogs';
-import { POLITICIANS, PoliticianDef } from '../config/politicians';
+import { POLITICIANS, PRISONERS, PoliticianDef } from '../config/politicians';
 import { PROPS, FENCES, DOOR, START, WORLD, SCATTER, sc, PropDef, PropKind } from '../config/world';
-import { PROP_META, GAL_ORIGIN, getGroundField } from '../art';
+import { PROP_META, GAL_ORIGIN, POL_ORIGIN, getGroundField } from '../art';
 import type { Dir } from '../art/chicken';
 import { Grid, Pt } from '../systems/grid';
 import { Joystick } from '../systems/joystick';
@@ -17,6 +17,7 @@ import { QuestionPanel } from '../ui/QuestionPanel';
 import { arcadeText, txt } from '../ui/widgets';
 import { snd } from '../audio/sound';
 import { music } from '../audio/music';
+import { fed, run } from '../state';
 
 type State = 'explore' | 'dialog' | 'giving' | 'cinematic';
 const SHADOWED = new Set(['tree', 'tree2', 'deadtree', 'coop', 'coopBig', 'coopOld', 'horreo', 'haystack', 'hay', 'barrel', 'crate', 'bush', 'bush2', 'trough', 'feeder', 'scarecrow', 'rock']);
@@ -34,11 +35,13 @@ export class GameScene extends Phaser.Scene {
   flies: { s: Phaser.GameObjects.Sprite; hx: number; hy: number; ph: number; r: number }[] = [];
   enterFade?: Politician; enterFrom = 0; hint?: Phaser.GameObjects.Text;
   private heroMoveTween?: Phaser.Tweens.Tween;
+  jailBubble?: Bubble; jailId = '';
 
   constructor() { super('Game'); }
 
   // ───────────────────────────── creación ─────────────────────────────
   create() {
+    this.jailBubble = undefined; this.jailId = '';
     this.state = 'explore'; this.voted = false; this.exploreTime = 0; this.npc = undefined; this.npcState = 'none'; this.bubble = undefined; this.npcBubble = undefined;
     this.pols = []; this.chicks = []; this.hens = []; this.flies = []; this.activePol = undefined; this.enterFade = undefined; this.camGoal = null; this.cluckT = 5;
     const cam = this.cameras.main;
@@ -46,10 +49,11 @@ export class GameScene extends Phaser.Scene {
     this.add.image(0, 0, 'ground').setOrigin(0, 0).setDepth(-10);
     this.buildWorld();
 
-    this.hero = new Hero(this, START.x, START.y);
-    this.camZone = this.add.zone(START.x, START.y, 1, 1);
+    const sp = run.last ? { x: run.last[0], y: run.last[1] } : START;   // al continuar, se reanuda junto al último político votado
+    this.hero = new Hero(this, sp.x, sp.y);
+    this.camZone = this.add.zone(sp.x, sp.y, 1, 1);
     cam.startFollow(this.camZone, true, CFG.camLerp, CFG.camLerp);
-    cam.centerOn(START.x, START.y);
+    cam.centerOn(sp.x, sp.y);
 
     this.joy = new Joystick(); this.joy.setEnabled(true);
     this.panel = new QuestionPanel(this);
@@ -95,9 +99,14 @@ export class GameScene extends Phaser.Scene {
 
     // políticos
     for (const def of POLITICIANS) {
+      if (fed.has(def.id)) continue;          // los ya entregados al zorro desaparecen
       const p = new Politician(this, def);
       p.onStep = w => this.footstep(w.x, w.y, 'pol');
       this.pols.push(p);
+    }
+    // presos (inventados) dentro de sus jaulas
+    for (const pr of PRISONERS) {
+      this.add.sprite(pr.x, pr.y - 4, `${pr.id}_0`).setOrigin(POL_ORIGIN.x, POL_ORIGIN.y).setDepth(pr.y - 1).play(`${pr.id}_anim`);
     }
     // pollitos y mariposas
     const homes: Pt[] = [[300, 2050], [200, 2120], [380, 2150], [150, 1500], [230, 1500], [1090, 1730], [1050, 1790], [140, 920], [1060, 1290], [700, 1000]];
@@ -164,6 +173,7 @@ export class GameScene extends Phaser.Scene {
     const k = 1 - Math.exp(-5 * dt);
     this.camZone.x += (gx - this.camZone.x) * k; this.camZone.y += (gy - this.camZone.y) * k;
     this.bubble?.place(this.cameras.main);
+    this.jailBubble?.place(this.cameras.main);
     this.npcBubble?.place(this.cameras.main);
     if (this.state === 'dialog' && this.panel.visible) {
       if (Phaser.Input.Keyboard.JustDown(this.keys.Y) || Phaser.Input.Keyboard.JustDown(this.keys.ENTER)) this.pendingChoice?.(true);
@@ -211,7 +221,19 @@ export class GameScene extends Phaser.Scene {
 
     // gallina secundaria
     if (!this.voted) this.exploreTime += dt;
-    if (!this.voted && this.npcState === 'none' && this.exploreTime >= CFG.npcDelaySec) this.spawnNpc();
+    if (!this.voted && fed.size === 0 && this.npcState === 'none' && this.exploreTime >= CFG.npcDelaySec) this.spawnNpc();
+
+    // presos: aviso al acercarse
+    let near = '';
+    for (const pr of PRISONERS) if (Math.hypot(h.x - pr.x, (h.y - pr.y) * 1.15) < 56) { near = pr.id; break; }
+    if (near !== this.jailId) {
+      this.jailBubble?.close(120); this.jailBubble = undefined; this.jailId = near;
+      if (near) {
+        const pr = PRISONERS.find(q => q.id === near)!;
+        this.jailBubble = new Bubble(this, pr.x, pr.y - 56, TEXT.jailed, 140, 2);
+        this.jailBubble.place(this.cameras.main); this.jailBubble.typeOut(); snd.blip();
+      }
+    }
 
     // proximidad con los políticos
     for (const p of this.pols) {
@@ -265,6 +287,7 @@ export class GameScene extends Phaser.Scene {
     const h = this.hero;
     // se acerca a la urna
     const tx = p.x + 27, ty = p.y + 7;
+    run.last = [tx, ty];
     await this.heroWalk(tx, ty);
     h.dir = 'left'; h.play('idle'); p.idle();
     this.camGoal = [(h.x + p.x) / 2, (h.y + p.y) / 2 + 20];
@@ -465,7 +488,7 @@ export class GameScene extends Phaser.Scene {
   debugTp(id: string) { const p = this.pols.find(q => q.def.id === id); if (p) { this.hero.x = p.x - 70; this.hero.y = p.y + 30; this.camZone.setPosition(this.hero.x, this.hero.y); this.cameras.main.centerOn(this.hero.x, this.hero.y); } }
   private cleanup() {
     this.joy?.destroy(); this.panel?.destroy();
-    this.bubble?.destroy(); this.npcBubble?.destroy(); this.dim?.destroy();
+    this.bubble?.destroy(); this.jailBubble?.destroy(); this.npcBubble?.destroy(); this.dim?.destroy();
     this.npc?.destroy(); this.pols.forEach(p => p.destroy());
     try { this.tweens.killAll(); this.time.removeAllEvents(); this.input.keyboard?.removeAllListeners(); } catch { /* escena ya apagada */ }
   }

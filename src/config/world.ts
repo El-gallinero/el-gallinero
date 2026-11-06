@@ -50,7 +50,7 @@ const FENCES_RAW: FenceDef[] = [
 ];
 
 export type PropKind = 'tree' | 'tree2' | 'deadtree' | 'bush' | 'bush2' | 'rock' | 'hay' | 'haystack' | 'trough' | 'feeder' | 'barrel' | 'crate' | 'scarecrow'
-  | 'coop' | 'coopBig' | 'coopOld' | 'horreo' | 'sign';
+  | 'coop' | 'coopBig' | 'coopOld' | 'horreo' | 'sign' | 'cage';
 export interface PropDef { k: PropKind; x: number; y: number; flip?: boolean }
 const PROPS_RAW: PropDef[] = [
   // inicio (zona tranquila)
@@ -80,6 +80,8 @@ const PROPS_RAW: PropDef[] = [
   { k: 'tree', x: 760, y: 2150 }, { k: 'bush2', x: 480, y: 2170 }, { k: 'hay', x: 610, y: 2110 },
   // carteles en cruces
   { k: 'sign', x: 700, y: 1830 }, { k: 'sign', x: 560, y: 1590 }, { k: 'sign', x: 710, y: 1100 },
+  // jaulas de los presos (ver PRISONERS en politicians.ts)
+  { k: 'cage', x: 570, y: 1870 }, { k: 'cage', x: 810, y: 1450 }, { k: 'cage', x: 560, y: 780 },
   // zona de la puerta (siniestra)
   { k: 'deadtree', x: 500, y: 250 }, { k: 'deadtree', x: 790, y: 240 }, { k: 'deadtree', x: 430, y: 330 }, { k: 'deadtree', x: 850, y: 330 },
   { k: 'rock', x: 560, y: 300 }, { k: 'rock', x: 720, y: 295 },
