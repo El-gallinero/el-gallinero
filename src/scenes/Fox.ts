@@ -199,12 +199,12 @@ export class FoxScene extends Phaser.Scene {
     const n = fed.size;
     let locked = false;
     const go = (fn: () => void) => () => { if (locked) return; locked = true; cam.fadeOut(350, 0, 0, 0); cam.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, fn); };
-    const text = n === 1 || !fresh ? TEXT.foxWorker : n === 2 ? TEXT.allFox : n === 5 ? TEXT.foxWins : TEXT.keepLines[n];
+    const text = n <= 2 || !fresh ? TEXT.foxWorker : n === 3 ? TEXT.allFox : n === 5 ? TEXT.foxWins : TEXT.keepLines[n];
     const msg = arcadeText(this, CX, y1 - 66, text, 10, '#ffffff', '#3a1020').setDepth(1100).setAlpha(0);
     this.tweens.add({ targets: msg, alpha: 1, duration: 300 });
     if (n >= 3) this.add.text(CX, 10, TEXT.votes(n), { fontFamily: FONT, fontSize: '8px', color: '#ffe14a', stroke: '#3a1020', strokeThickness: 3 }).setOrigin(0.5, 0).setDepth(1100);
     snd.blip();
-    if (n === 2) {                          // remate: la pantalla cambia sola a "¿Y AHORA QUÉ?"
+    if (n === 3 && fresh) {                 // remate: la pantalla cambia sola a "¿Y AHORA QUÉ?"
       this.time.delayedCall(3600, go(() => this.scene.start('Choice')));
       return;
     }

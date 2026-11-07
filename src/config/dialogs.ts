@@ -20,7 +20,7 @@ export const TEXT = {
   homeCaps: ['A CASA A VER\nGALLINAFLIX'],
   optKeep: 'SEGUIR VOTANDO',
   votes: (n: number) => `VOTOS AL ZORRO: ${n}`,
-  keepLines: ['', '', '', 'OTRA VEZ\nLO MISMO...', 'Y SIGUES\nVOTANDO...'],
+  keepLines: ['', '', '', '', 'OTRA VEZ\nLO MISMO...'],
   foxWins: 'GANA EL ZORRO\n5 DE 5',
   rebelHint: '¡LAS GALLINAS HAN\nTOMADO EL CORRAL!',
   jailed: '¡ESTE POLÍTICO\nESTÁ PRESO!\nBUSCA OTRO',
