@@ -234,6 +234,9 @@ body:has(.question-card){background:#F7F6F4}
  .footer-controls .footer-back{display:none}
  .footer-controls .continue-action{min-height:54px}
 }
+
+/* Contraste: todas las respuestas siempre en negro */
+.option,.option .optext,.option .letter,.option[aria-pressed="true"],.option[aria-pressed="true"] .optext{color:#111111!important;-webkit-text-fill-color:#111111!important}
 </style></head><body><div id="app"></div><script>
 const questions=[
 {topic:'JUSTICIA SOCIAL',q:'¿Cuál de estas situaciones te preocupa más de nuestra sociedad?',a:['Que muchas personas, pese a trabajar y esforzarse, no tengan salarios suficientes ni un acceso adecuado a derechos básicos como la sanidad o la vivienda.','Que algunas personas disfruten de derechos y prestaciones sociales sin contribuir a la sociedad en la medida en que podrían hacerlo.','Que no estemos garantizando los recursos y las condiciones necesarias para mantener esos derechos y prestaciones para las generaciones futuras.'],tags:['igualdad','responsabilidad','futuro']},
