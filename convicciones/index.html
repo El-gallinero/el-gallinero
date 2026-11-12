@@ -138,6 +138,28 @@ h1{letter-spacing:-.073em}
 .question-card > .row,.question-card h2,.question-card .options,.question-card .qcontext{position:relative;z-index:1}
 @media(min-width:700px){.hero-drawing{max-width:390px;margin-top:20px}.home-buttons{margin-top:24px}.topic-art{position:absolute;right:22px;top:52px;opacity:.25;width:235px;height:155px;margin:0;z-index:0}.question-card h2{max-width:92%;padding-right:12px;margin-top:39px!important}}
 @media(max-width:420px){.hero-drawing{max-width:305px;margin:22px auto 8px}.topic-art{height:105px;width:205px;margin:0 0 12px auto}.home-buttons{margin-top:18px}}
+
+/* Mobile-first: titulares y textos introductorios centrados */
+@media(max-width:699px){
+  .hero{text-align:center;display:flex;flex-direction:column;align-items:center}
+  .hero .eyebrow,.hero h1,.hero h2,.hero .lead{text-align:center}
+  .hero h1{width:100%;margin-left:auto;margin-right:auto}
+  .hero-em{margin-inline:auto}
+  .lead{margin-inline:auto;max-width:35ch}
+  .top{align-items:center}
+  .qhead{justify-content:center;position:relative;min-height:34px}
+  .qhead .eyebrow{text-align:center}
+  .qhead .question-count{position:absolute;right:0;top:50%;transform:translateY(-50%)}
+  .question-card>.row{flex-direction:column;align-items:center;gap:10px;text-align:center}
+  .question-card h2{text-align:center;margin-left:auto;margin-right:auto;max-width:100%}
+  .question-card .qcontext{text-align:center}
+  .topic-art{margin-left:auto;margin-right:auto}
+  .option,.optext{text-align:left}
+}
+@media(max-width:380px){
+  .qhead{padding-right:57px;justify-content:flex-start}
+  .qhead .eyebrow{width:100%;text-align:center}
+}
 </style></head><body><div id="app"></div><script>
 const questions=[
 {topic:'JUSTICIA SOCIAL',q:'¿Cuál de estas situaciones te preocupa más de nuestra sociedad?',a:['Que muchas personas, pese a trabajar y esforzarse, no tengan salarios suficientes ni un acceso adecuado a derechos básicos como la sanidad o la vivienda.','Que algunas personas disfruten de derechos y prestaciones sociales sin contribuir a la sociedad en la medida en que podrían hacerlo.','Que no estemos garantizando los recursos y las condiciones necesarias para mantener esos derechos y prestaciones para las generaciones futuras.'],tags:['igualdad','responsabilidad','futuro']},
