@@ -1,0 +1,42 @@
+name: Publicar encuesta en GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'convicciones/**'
+      - '.github/workflows/publicar-encuesta.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+      - name: Preparar publicación del juego
+        run: |
+          mkdir -p _site/convicciones
+          cp convicciones/index.html _site/convicciones/index.html
+          printf '<!doctype html><html lang="es"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="refresh" content="0;url=./convicciones/"><title>En qué crees</title><a href="./convicciones/">Abrir juego</a></html>' > _site/index.html
+      - name: Configurar Pages
+        uses: actions/configure-pages@v5
+      - name: Subir web
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+      - name: Publicar web
+        id: deployment
+        uses: actions/deploy-pages@v4
