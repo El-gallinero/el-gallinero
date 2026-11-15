@@ -1,6 +1,6 @@
 // Aspecto (caricatura) de cada político. Clave = spriteId de config/politicians.ts
 export interface Look {
-  skin: string; hair: string; hairStyle: 'rufion' | 'irene' | 'feijoo' | 'sanxe' | 'abascal';
+  skin: string; hair: string; hairStyle: 'rufion' | 'irene' | 'feijoo' | 'sanxe' | 'abascal' | 'colau';
   hair2?: string;            // canas / mechas
   beard?: string; beardStyle?: 'short' | 'full';
   glasses?: boolean; jacket: string; shirt: string; tie?: string; pants: string; shoes: string;
@@ -13,6 +13,7 @@ export const LOOKS: Record<string, Look> = {
   feijoo:  { skin: '#e9b997', hair: '#a0703f', hair2: '#d0cbc0', hairStyle: 'feijoo', glasses: true, eye: '#5c7a96', jacket: '#2c52a0', shirt: '#f6f6f6', tie: '#3a78d0', pants: '#22345e', shoes: '#33241c', brow: '#6a5030' },
   sanxe:   { skin: '#d9a07a', hair: '#1f1a1f', hair2: '#7d7d88', hairStyle: 'sanxe', eye: '#2a1c14', jacket: '#22397a', shirt: '#f6f6f6', tie: '#d4202c', pants: '#1c2850', shoes: '#241812', brow: '#14101a' },
   abascal: { skin: '#dba27c', hair: '#3a3032', hairStyle: 'abascal', hair2: '#6a6666', beard: '#1c1616', beardStyle: 'full', jacket: '#5e6832', shirt: '#26242a', pants: '#3b3f26', shoes: '#2a1c14', brow: '#1c1616' },
+  colau:   { skin: '#e6b190', hair: '#2c1d1a', hair2: '#4a3430', hairStyle: 'colau', eye: '#3a2214', jacket: '#ef5a3c', shirt: '#fff4e8', pants: '#2a2a3a', shoes: '#2a1a14', female: true, earrings: true, brow: '#2c1d1a', noFace: true },
   // presos inventados (no se parecen a nadie concreto): mono naranja
   pris_a:  { skin: '#e8b48c', hair: '#8a8a92', hair2: '#b8b8c0', hairStyle: 'sanxe', glasses: true, jacket: '#e07a1e', shirt: '#f08a2c', pants: '#c8651a', shoes: '#2a1a12', brow: '#6a6a72', noFace: true },
   pris_b:  { skin: '#d9a07a', hair: '#b8742e', hair2: '#d89a4e', hairStyle: 'rufion', beard: '#8a4a1e', beardStyle: 'short', jacket: '#e07a1e', shirt: '#f08a2c', pants: '#c8651a', shoes: '#2a1a12', brow: '#8a4a1e', noFace: true },
