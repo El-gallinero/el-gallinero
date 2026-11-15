@@ -199,7 +199,7 @@ export class FoxScene extends Phaser.Scene {
     const n = fed.size;
     let locked = false;
     const go = (fn: () => void) => () => { if (locked) return; locked = true; cam.fadeOut(350, 0, 0, 0); cam.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, fn); };
-    const text = n <= 2 || !fresh ? TEXT.foxWorker : n === 3 ? TEXT.allFox : n === 5 ? TEXT.foxWins : TEXT.keepLines[n];
+    const text = n <= 2 || !fresh ? TEXT.foxWorker : n === 3 ? TEXT.allFox : n === POLITICIANS.length ? TEXT.foxWins : TEXT.keepLines[n];
     const msg = arcadeText(this, CX, y1 - 66, text, 10, '#ffffff', '#3a1020').setDepth(1100).setAlpha(0);
     this.tweens.add({ targets: msg, alpha: 1, duration: 300 });
     if (n >= 3) this.add.text(CX, 10, TEXT.votes(n), { fontFamily: FONT, fontSize: '8px', color: '#ffe14a', stroke: '#3a1020', strokeThickness: 3 }).setOrigin(0.5, 0).setDepth(1100);
@@ -209,7 +209,7 @@ export class FoxScene extends Phaser.Scene {
       return;
     }
     let again: PixelButton | undefined;
-    if (n === 5) {
+    if (n === POLITICIANS.length) {
       seenEndings.add('zorro'); stat('final-zorro');
       again = pixelButton(this, CX, y1 + 60, 184, 34, TEXT.restart, GREEN, go(() => { resetRun(); this.scene.start('Game'); }));
     } else {
