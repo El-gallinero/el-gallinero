@@ -32,6 +32,9 @@ export const POLITICIANS: PoliticianDef[] = [
     spriteId: 'sanxe', x: sc(1020), y: sc(1250), speed: 126, idleAnim: 'idle', reaction: 'C', urnColor: 0xd8242c, urnMark: 'PS' },
   { id: 'abascal', name: 'Pollascal', line: '¡Este gallinero se defiende con dos huevos!',
     spriteId: 'abascal', x: sc(260), y: sc(900), speed: 126, idleAnim: 'idle', reaction: 'B', urnColor: 0x5fa83a, urnMark: 'VX' },
+  // Añadida a petición: parodia de Ada Colau. Nombre, frase, reacción y posición son PROVISIONALES (editar aquí).
+  { id: 'colau', name: 'Ada Clueca', line: '¡Un nido digno para cada gallina!',
+    spriteId: 'colau', x: sc(300), y: sc(330), speed: 126, idleAnim: 'idle', reaction: 'B', urnColor: 0xef5a3c, urnMark: 'BC' },
 ];
 
 // Presos de la parodia: personajes INVENTADOS (no se parecen a nadie concreto), en jaulas junto al camino.
