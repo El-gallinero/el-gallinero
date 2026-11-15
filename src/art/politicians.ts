@@ -13,6 +13,7 @@ const hx = (n: number) => '#' + n.toString(16).padStart(6, '0');
 // glifos 3x5 para las etiquetas de las urnas
 const GLYPH: Record<string, string[]> = {
   P: ['111', '101', '111', '100', '100'], S: ['111', '100', '111', '001', '111'],
+  B: ['110', '101', '110', '101', '110'], C: ['111', '100', '100', '100', '111'],
   V: ['101', '101', '101', '101', '010'], X: ['101', '101', '010', '101', '101'],
 };
 const FEM = ['.XXX.', 'X...X', 'X...X', '.XXX.', '..X..', '.XXX.'];
@@ -71,6 +72,7 @@ function hairMask(look: Look, x: number, y: number, oy: number, dir: Dir): boole
     case 'irene':  return back ? true : yy <= 15 - Math.abs(x - 24) * 0.12 - (x < 24 ? 0 : 0.5) || x < 13.5 || x > 34.5;
     case 'feijoo': return back ? yy < 24 : yy <= 13 + (x < 18 ? 2 : 0) || (x < 13.5 && yy < 20) || (x > 34.5 && yy < 20);
     case 'sanxe':  return back ? yy < 23 : yy <= 12.6 + (x < 17 || x > 31 ? 1.5 : 0) || (x < 13.5 && yy < 19) || (x > 34.5 && yy < 19);
+    case 'colau':  return back ? yy < 25 : yy <= 14.5 - Math.abs(x - 24) * 0.1 || (x < 14 && yy < 21) || (x > 34 && yy < 21);
     case 'abascal': return back ? yy < 23 : yy <= 12.8 + (x < 17 || x > 31 ? 1.5 : 0) || ((x < 14 || x > 34) && yy < 19);
   }
 }
@@ -218,6 +220,7 @@ export function drawPol(look: Look, urn: UrnSpec, o: PolPose): Px {
     if (dir === 'down') { p.rect(8, 22 + oy, 5, 16, hr.base); p.rect(35, 22 + oy, 5, 16, hr.base); p.rect(8, 22 + oy, 1, 16, hr.light); p.rect(39, 24 + oy, 1, 14, hr.dark); p.rect(8, 37 + oy, 5, 2, hr.dark); p.rect(35, 37 + oy, 5, 2, hr.dark); }
     if (dir === 'up') { p.ell(24, 34 + oy, 12, 10, hr); p.line(24, 24 + oy, 24, 42 + oy, hr.dark); }
   }
+  if (look.hairStyle === 'colau') { p.ell(24, 8 + oy, 12.5, 5.5, hr); p.line(15, 8 + oy, 32, 5 + oy, hr.light); p.ell(13, 14 + oy, 3, 4, hr); p.ell(35, 14 + oy, 3, 4, hr); p.line(22, 6 + oy, 29, 11 + oy, hr.dark); }
   if (look.hairStyle === 'abascal') { p.ell(24, 8 + oy, 11, 4, hr); p.line(17, 7 + oy, 28, 5 + oy, hr.light); }
 
   // ── cara ────────────────────────────────────────────────
